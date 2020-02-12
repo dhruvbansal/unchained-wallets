@@ -49,7 +49,7 @@
     "pako": "^1.0.10",
     "punycode": "^2.1.1",
     "trezor-connect": "^8.0.13",
-    "unchained-bitcoin": "git://github.com/dhruvbansal/unchained-bitcoin.git#better_docs_and_testing"
+    "unchained-bitcoin": "0.0.7"
   },
   "directories": {
     "lib": "lib"

@@ -95,7 +95,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line229">line 229</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -244,7 +244,7 @@ the user to be in the Ledger dashboard, not the bitcoin app
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line170">line 170</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -272,6 +272,10 @@ the user to be in the Ledger dashboard, not the bitcoin app
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>messages for this interaction</p>
+</div>
+
 
 
 <dl>
@@ -298,7 +302,7 @@ the user to be in the Ledger dashboard, not the bitcoin app
     
 
     
-    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -355,7 +359,7 @@ the user to be in the Ledger dashboard, not the bitcoin app
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line482">line 482</a>
+        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line500">line 500</a>
     </li></ul></dd>
     
 
@@ -378,8 +382,38 @@ the user to be in the Ledger dashboard, not the bitcoin app
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>An error since this is a direct interaction.</p>
+    
+    </div>
 
 
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -452,7 +486,7 @@ metadata object.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>binary response data</p></td>
         </tr>
 
     
@@ -493,7 +527,7 @@ metadata object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line248">line 248</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -521,6 +555,12 @@ metadata object.</p>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <ul>
+<li>device metadata</li>
+</ul>
+</div>
+
 
 
 <dl>
@@ -547,7 +587,7 @@ metadata object.</p>
     
 
     
-    <h4 class="name" id="request"><span class="type-signature"></span>request<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="request"><span class="type-signature"></span>request<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -604,7 +644,7 @@ metadata object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line474">line 474</a>
+        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line489">line 489</a>
     </li></ul></dd>
     
 
@@ -627,8 +667,38 @@ metadata object.</p>
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>An error since this is a direct interaction.</p>
+    
+    </div>
 
 
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -700,7 +770,7 @@ always return a promise as it is designed to be called within an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line466">line 466</a>
+        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line478">line 478</a>
     </li></ul></dd>
     
 
@@ -728,6 +798,10 @@ always return a promise as it is designed to be called within an
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>Does the work of interacting with the keystore.</p>
+</div>
+
 
 
 <dl>
@@ -754,7 +828,7 @@ always return a promise as it is designed to be called within an
     
 
     
-    <h4 class="name" id="withApp"><span class="type-signature">(async) </span>withApp<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="withApp"><span class="type-signature">(async) </span>withApp<span class="signature">(callback)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -867,7 +941,7 @@ API as the second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line145">line 145</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -892,6 +966,28 @@ API as the second.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>does the work of setting up an app instance (and transport connection)g181</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -912,7 +1008,7 @@ API as the second.</p>
     
 
     
-    <h4 class="name" id="withTransport"><span class="type-signature">(async) </span>withTransport<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="withTransport"><span class="type-signature">(async) </span>withTransport<span class="signature">(callback)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -977,7 +1073,7 @@ to the function.</p>
             
 
             <td class="description last"><ul>
-<li>accepts a single parameter <code>transport</code></li>
+<li>asynchronous function accepting a single parameter <code>transport</code></li>
 </ul></td>
         </tr>
 
@@ -1024,7 +1120,7 @@ to the function.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line122">line 122</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -1049,6 +1145,28 @@ to the function.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>does the work of setting up a transport connection</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1085,7 +1203,7 @@ to the function.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jan 05 2020 16:43:31 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 20:25:40 GMT-0700 (Mountain Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

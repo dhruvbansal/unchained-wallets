@@ -26,7 +26,9 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>/* eslint-disable max-lines*/
+
+/**
  * Provides classes for interacting with Trezor hardware wallets.
  *
  * The base class provided is `TrezorInteraction` which wraps calls to [`TrezorConnect`]{@link https://github.com/trezor/connect}.  New interactions should subclass `TrezorInteraction`.
@@ -54,7 +56,6 @@
 import BigNumber from "bignumber.js";
 import {
   MAINNET,
-  TESTNET,
   bip32PathToSequence,
   multisigAddress,
   multisigPublicKeys,
@@ -71,7 +72,6 @@ import {
   ACTIVE,
   INFO,
   ERROR,
-  WARNING,
 } from "./interaction";
 
 /**
@@ -90,12 +90,53 @@ const ADDRESS_SCRIPT_TYPES = {
   [P2WSH]: 'SPENDWITNESS',
 }
 
+/**
+ * Constant representing the action of pushing the left button on a
+ * Trezor device.
+ *
+ * @type {string}
+ * @default 'trezor_left_button'
+ */
+export const TREZOR_LEFT_BUTTON = 'trezor_left_button';
+
+/**
+ * Constant representing the action of pushing the right button on a
+ * Trezor device.
+ *
+ * @type {string}
+ * @default 'trezor_right_button'
+ */
+export const TREZOR_RIGHT_BUTTON = 'trezor_right_button';
+
+/**
+ * Constant representing the action of pushing both buttons on a
+ * Trezor device.
+ *
+ * @type {string}
+ * @default 'trezor_both_buttons'
+ */
+export const TREZOR_BOTH_BUTTONS = 'trezor_both_buttons';
+
+/**
+ * Constant representing the action of pushing and holding the Confirm
+ * button on a Trezor model T device.
+ *
+ * @type {string}
+ * @default 'trezor_push_and_hold_button'
+ */
+export const TREZOR_PUSH_AND_HOLD_BUTTON = 'trezor_push_and_hold_button';
+
+
 try {
   TrezorConnect.manifest({email: "help@unchained-capital.com", appUrl: "https://github.com/unchained-capital/unchained-wallets"});
 } catch(e) {
   // We hit this if we run this code outside of a browser, for example
   // during unit testing.
-  console.error("Unable to call TrezorConnect.manifest.");
+  /* eslint-disable no-process-env */
+  if (process.env.NODE_ENV !== 'test') {
+    /* eslint-enable */
+    console.error("Unable to call TrezorConnect.manifest.");
+  }
 }
 
 /**
@@ -159,7 +200,6 @@ try {
  *   }
  * 
  * }
- *
  * // usage
  * import {MAINNET} from "unchained-bitcoin";
  * const interaction = new SimpleTrezorInteraction({network: MAINNET, param: "foo"});
@@ -172,7 +212,7 @@ export class TrezorInteraction extends DirectKeystoreInteraction {
    * Trezor interactions require knowing the bitcoin network they are
    * for.
    *
-   * @param {object} options
+   * @param {object} options - options argument
    * @param {string} options.network - bitcoin network
    */
   constructor({network}) {
@@ -189,12 +229,34 @@ export class TrezorInteraction extends DirectKeystoreInteraction {
    * Subclasses should override this method and add their own messages
    * (don't forget to call `super()`).
    *
-   * @returns {module:interaction.Message[]} messages
+   * @returns {module:interaction.Message[]} messages for this interaction
    */
   messages() {
     const messages = super.messages();
-    messages.push({state: PENDING, level: INFO, text: "Make sure your Trezor device is plugged in.", code: "device.connect"});
-    messages.push({state: ACTIVE, level: INFO, text: "Your browser should open a new Trezor Connect window.  If you do not see this window, ensure you have enabled popups for this site.", code: "trezor.connect.generic"});
+    
+    messages.push({
+      version: "One",
+      state: PENDING, 
+      level: INFO, 
+      text: "Make sure your Trezor device is plugged in.", 
+      code: "device.connect",
+    });
+
+    messages.push({
+      version: "T",
+      state: PENDING, 
+      level: INFO, 
+      text: "Make sure your Trezor device is plugged in and unlocked.", 
+      code: "device.connect",
+    });
+
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      text: "Your browser should open a new Trezor Connect window.  If you do not see this window, ensure you have enabled popups for this site.", 
+      code: "trezor.connect.generic",
+    });
+
     return messages;
   }
 
@@ -209,7 +271,7 @@ export class TrezorInteraction extends DirectKeystoreInteraction {
    * Otherwise it returns the result of passing `result.payload` to
    * `this.parse`.
    *
-   * @returns {Promise}
+   * @returns {Promise} handles the work of calling TrezorConnect
    */
   async run() {
     const [method, params] = this.connectParams();
@@ -231,11 +293,11 @@ export class TrezorInteraction extends DirectKeystoreInteraction {
    *
    * By default, the function passed just throws an error.
    *
-   * @returns {Array&lt;function,Object>}
+   * @returns {Array&lt;function,Object>} the TrezorConnect parameters
    */
   connectParams() {
     return[
-      (params) => { throw new Error("Override the `connectParams` method on a subclass of TrezorInteraction."); },
+      () => { throw new Error("Override the `connectParams` method on a subclass of TrezorInteraction."); },
       {},
     ];
   }
@@ -246,8 +308,8 @@ export class TrezorInteraction extends DirectKeystoreInteraction {
    *
    * By default, the entire payload is returned.
    *
-   * @param {Object} payload
-   * @returns {Object}
+   * @param {Object} payload - the raw payload from the device response
+   * @returns {Object} - relevant or formatted data built from the raw payload
    */
   parse(payload) {
     return payload;
@@ -298,7 +360,7 @@ export class TrezorGetMetadata extends TrezorInteraction {
    *
    * See {@link https://github.com/trezor/connect/blob/v8/src/js/core/methods/GetFeatures.js}.
    *
-   * @returns {Array&lt;function, Object>}
+   * @returns {Array&lt;function, Object>} TrezorConnect parameters
    */
   connectParams() {
     return [
@@ -311,8 +373,8 @@ export class TrezorGetMetadata extends TrezorInteraction {
    * Parses Trezor device featuress into an appropriate metadata
    * shape.
    *
-   * @param {Object} payload
-   * @returns {Object}
+   * @param {Object} payload - the original payload from the device response
+   * @returns {Object} device metadata &amp; features
    */
   parse(payload) {
     // Example result:
@@ -398,7 +460,7 @@ export class TrezorExportHDNode extends TrezorInteraction {
   /**
    * Requires a BIP32 path to the node to export as well as which network.
    * 
-   * @param {object} options
+   * @param {object} options - options argument
    * @param {string} options.network - bitcoin network
    * @param {string} bip32Path - the BIP32 path for the HD node
    */
@@ -411,29 +473,27 @@ export class TrezorExportHDNode extends TrezorInteraction {
    * Adds messages related to warnings Trezor devices make depending
    * on the BIP32 path passed.
    * 
-   * @returns {module:interaction.Message[]}
+   * @returns {module:interaction.Message[]} messages for this interaction
    */
   messages() {
     const messages = super.messages();
 
     const bip32PathSegments = (this.bip32Path || '').split('/');
     if (bip32PathSegments.length &lt; 4) { // m, 45', 0', 0', ...
-      messages.push({state: PENDING, level: ERROR, text: "BIP32 path must be at least depth 3.", code: "trezor.bip32_path.minimum"});
-    } else {
-      const coinPath = bip32PathSegments[2];
-      if (this.network === MAINNET) {
-        if (! coinPath.match(/^0'/)) {
-          messages.push({state: ACTIVE, level: WARNING, text: "On Trezor model T the screen may display a 'Confirm path' warning message.", code: "trezor.bip32_path.mismatch"});
-        }
-      }
-      if (this.network === TESTNET) {
-        if (! coinPath.match(/^1'/)) {
-          messages.push({state: ACTIVE, level: WARNING, text: "On Trezor model T the screen may display a 'Confirm path' warning message.'", code: "trezor.bip32_path.mismatch"});
-        }
-      }
+      messages.push({
+        state: PENDING, 
+        level: ERROR, 
+        text: "BIP32 path must be at least depth 3.", 
+        code: "trezor.bip32_path.minimum",
+      });
     }
 
-    messages.push({state: ACTIVE, level: INFO, text: "Confirm in the Trezor Connect window that you want to 'Export public key'.  You may be prompted to enter your PIN.", code: "trezor.connect.export_hdnode"});
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      text: "Confirm in the Trezor Connect window that you want to 'Export public key'.  You may be prompted to enter your PIN.", 
+      code: "trezor.connect.export_hdnode",
+    });
 
     return messages;
   }
@@ -441,7 +501,7 @@ export class TrezorExportHDNode extends TrezorInteraction {
   /**
    * See {@link https://github.com/trezor/connect/blob/v8/docs/methods/getPublicKey.md}.
    *
-   * @returns {Object}
+   * @returns {Array&lt;function,Object>} TrezorConnect parameters
    */
   connectParams() {
     return [
@@ -473,7 +533,7 @@ export class TrezorExportPublicKey extends TrezorExportHDNode {
   /**
    * Parses the public key from the HD node response.
    *
-   * @param {object} payload
+   * @param {object} payload - the original payload from the device response
    * @returns {string} the (compressed) public key in hex
    */
   parse(payload) {
@@ -499,7 +559,7 @@ export class TrezorExportExtendedPublicKey extends TrezorExportHDNode {
   /**
    * Parses the extended public key from the HD node response.
    *
-   * @param {object} payload
+   * @param {object} payload the original payload from the device response
    * @returns {string} the extended public key
    */
   parse(payload) {
@@ -552,7 +612,7 @@ export class TrezorExportExtendedPublicKey extends TrezorExportHDNode {
 export class TrezorSignMultisigTransaction extends TrezorInteraction {
 
   /**
-   * @param {object} options
+   * @param {object} options - options argument
    * @param {string} options.network - bitcoin network
    * @param {UTXO[]} options.inputs - inputs for the transaction
    * @param {TransactionOutput[]} options.outputs - outputs for the transaction
@@ -568,20 +628,64 @@ export class TrezorSignMultisigTransaction extends TrezorInteraction {
   /**
    * Adds messages describing the signing flow.
    *
-   * @returns {module:interaction.Message[]}
+   * @returns {module:interaction.Message[]} messages for this interaction
    */
   messages() {
     const messages = super.messages();
-    messages.push({state: ACTIVE, level: INFO, text: `Confirm in the Trezor Connect window that you want to 'Sign ${this.network} transaction'.  You may be prompted to enter your PIN.`, code: "trezor.connect.sign"});
-    messages.push({state: ACTIVE, level: INFO, text: `You Trezor device will ask you to confirm each output address above with its corresponding output amount.  Check each address and amount carefully against both the values displayed in this application and your own expectations.`, code: "trezor.signing.outputs"});
-    messages.push({state: ACTIVE, level: INFO, text: `Finally, your Trezor device will ask you to confirm the overall transaction output amount and fee.  Check both carefully against both the values displayed in this application and your own expectations.`, code: "trezor.signing.final"});
+
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      text: `Confirm in the Trezor Connect window that you want to 'Sign ${this.network} transaction'.  You may be prompted to enter your PIN.`, code: "trezor.connect.sign",
+    });
+
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      version: "One",
+      text: "Confirm each output on your Trezor device and approve the transaction.",
+      messages: [
+        {
+          text: "For each output, your Trezor device will display the output amount and address.",
+          action: TREZOR_RIGHT_BUTTON,
+        },
+        {
+          text: "Your Trezor device will display the total output amounts and fee amount.",
+          action: TREZOR_RIGHT_BUTTON,
+        },
+      ],
+      code: "trezor.sign",
+    });
+
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      version: "T",
+      text: "Confirm each output on your Trezor device and approve the transaction.",
+      messages: [
+        {
+          text: `For each input, your Trezor device will display a "Confirm path" dialogue displaying the input BIP32 path.  It is safe to continue`,
+          action: TREZOR_RIGHT_BUTTON,
+        },
+        {
+          text: `For each output, your Trezor device will display a "Confirm sending" dialogue displaying the output amount and address.`,
+          action: TREZOR_RIGHT_BUTTON,
+        },
+        {
+          text: `Your Trezor device will display the "Confirm transaction" dialogue displaying the total output amount and fee amount.`,
+          action: TREZOR_PUSH_AND_HOLD_BUTTON,
+        },
+      ],
+      code: "trezor.sign",
+    });
+
     return messages;
   }
 
   /**
    * See {@link https://github.com/trezor/connect/blob/v8/docs/methods/signTransaction.md}.
    *
-   * @returns {Array&lt;function, Object>}
+   * @returns {Array&lt;function, Object>} TrezorConnect parameters
    */
   connectParams() {
     return [
@@ -597,11 +701,13 @@ export class TrezorSignMultisigTransaction extends TrezorInteraction {
   /**
    * Parses the signature out of the response payload.
    *
-   * @param {Object} payload
-   * @returns {string[]} signature -- one signature per input
+   * Ensures each input's signature hasa a trailing `...01` {@link https://bitcoin.org/en/glossary/sighash-all SIGHASH_ALL} byte.
+   *
+   * @param {Object} payload - the original payload from the device response
+   * @returns {string[]} array of input signatures, one per input
    */
   parse(payload) {
-    return payload.signatures;
+    return (payload.signatures || []).map((inputSignature) => (`${inputSignature}01`));
   }
 
 }
@@ -617,7 +723,7 @@ export class TrezorSignMultisigTransaction extends TrezorInteraction {
  * } from "unchained-bitcoin";
  * import {TrezorConfirmMultisigAddress} from "unchained-wallets";
  * const multisig = generateMultisigFromPublicKeys(MAINNET, P2SH, 2, "03a...", "03b...");
- * const interaction = new TrezorConfirmMultisigAddress({network: MAINNET, bip32Path: "m/45'/0'/0'/0/0/", multisig});
+ * const interaction = new TrezorConfirmMultisigAddress({network: MAINNET, bip32Path: "m/45'/0'/0'/0/0", multisig});
  * await interaction.run();
  */
 export class TrezorConfirmMultisigAddress extends TrezorInteraction {
@@ -626,7 +732,7 @@ export class TrezorConfirmMultisigAddress extends TrezorInteraction {
    * Most of the information required to confirm a multisig address
    * lives in the `Multisig` object from `unchained-bitcoin`.
    * 
-   * @param {object} options
+   * @param {object} options - options argument
    * @param {string} options.network - bitcoin network
    * @param {string} options.bip32Path - BIP32 path to the public key on this device used in the multisig address
    * @param {Multisig} options.multisig - multisig object
@@ -639,18 +745,65 @@ export class TrezorConfirmMultisigAddress extends TrezorInteraction {
 
   /**
    * Adds messages about BIP32 path warnings.
+   *
+   * @returns {module:interaction.Message[]} messages for this interaction
    * 
    */
   messages() {
     const messages = super.messages();
-    // FIXME add messages!
+
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      text: `Confirm in the Trezor Connect window that you want to 'Export ${this.trezorCoin} address'.  You may be prompted to enter your PIN.`, code: "trezor.connect.confirm_address",
+    });
+
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      version: "One",
+      text: "Confirm the addresss on your Trezor device.",
+      messages: [
+        // FIXME this only shows up on P2SH?
+        {
+          text: `Your Trezor device may display a warning "Wrong address path for selected coin".  It is safe to continue`,
+          action: TREZOR_RIGHT_BUTTON,
+        },
+        {
+          text: `Your Trezor device will display the multisig address and BIP32 path.`,
+          action: TREZOR_RIGHT_BUTTON,
+        },
+      ],
+      code: "trezor.confirm_address",
+    });
+
+    
+    messages.push({
+      state: ACTIVE, 
+      level: INFO, 
+      version: "T",
+      text: "Confirm the addresss on your Trezor device.",
+      messages: [
+        {
+          text: `For each signer in your quorum, your Trezor device will display a "Confirm path" dialogue displaying the signer's BIP32 path.  It is safe to continue`,
+          action: TREZOR_RIGHT_BUTTON,
+        },
+        {
+          text: `Your Trezor device will display the multisig address.`,
+          action: TREZOR_RIGHT_BUTTON,
+        },
+      ],
+      code: "trezor.confirm_address",
+    });
+    
+
     return messages;
   }
 
   /**
    * See {@link https://github.com/trezor/connect/blob/v8/docs/methods/getAddress.md}.
    *
-   * @returns {Array&lt;function, Object>}
+   * @returns {Array&lt;function, Object>} TrezorConnect parameters
    */
   connectParams() {
     return [
@@ -676,7 +829,7 @@ export class TrezorConfirmMultisigAddress extends TrezorInteraction {
  * Returns the Trezor API version of the given network.
  *
  * @param {string} network - bitcoin network
- * @returns {string}
+ * @returns {string} Trezor API spelling for this network
  */
 export function trezorCoin(network) {
   return (network === MAINNET ? "Bitcoin" : "Testnet");
@@ -737,7 +890,7 @@ function trezorOutput(output) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jan 05 2020 16:43:31 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 20:25:40 GMT-0700 (Mountain Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

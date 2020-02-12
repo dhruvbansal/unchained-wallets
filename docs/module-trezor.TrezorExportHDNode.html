@@ -109,7 +109,7 @@ at a given BIP32 path.</p>
 
             
 
-            <td class="description last">
+            <td class="description last"><p>options argument</p>
                 <h6>Properties</h6>
                 
 
@@ -222,7 +222,7 @@ at a given BIP32 path.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line377">line 377</a>
+        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line439">line 439</a>
     </li></ul></dd>
     
 
@@ -298,7 +298,7 @@ console.log(node); // {publicKey: "", xpub: "", ...}</code></pre>
     
 
     
-    <h4 class="name" id="connectParams"><span class="type-signature"></span>connectParams<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="connectParams"><span class="type-signature"></span>connectParams<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;function(), Object>}</span></h4>
     
 
     
@@ -355,7 +355,7 @@ console.log(node); // {publicKey: "", xpub: "", ...}</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line418">line 418</a>
+        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line478">line 478</a>
     </li></ul></dd>
     
 
@@ -383,6 +383,10 @@ console.log(node); // {publicKey: "", xpub: "", ...}</code></pre>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>TrezorConnect parameters</p>
+</div>
+
 
 
 <dl>
@@ -391,7 +395,7 @@ console.log(node); // {publicKey: "", xpub: "", ...}</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">Array.&lt;function(), Object></span>
 
 
     </dd>
@@ -467,7 +471,7 @@ on the BIP32 path passed.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line388">line 388</a>
+        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line450">line 450</a>
     </li></ul></dd>
     
 
@@ -495,6 +499,10 @@ on the BIP32 path passed.</p>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>messages for this interaction</p>
+</div>
+
 
 
 <dl>
@@ -583,7 +591,7 @@ successful response from the device.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>the raw payload from the device response</p></td>
         </tr>
 
     
@@ -629,7 +637,7 @@ successful response from the device.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line224">line 224</a>
+        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line286">line 286</a>
     </li></ul></dd>
     
 
@@ -657,6 +665,12 @@ successful response from the device.</p>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <ul>
+<li>relevant or formatted data built from the raw payload</li>
+</ul>
+</div>
+
 
 
 <dl>
@@ -683,7 +697,7 @@ successful response from the device.</p>
     
 
     
-    <h4 class="name" id="request"><span class="type-signature"></span>request<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="request"><span class="type-signature"></span>request<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -740,7 +754,7 @@ successful response from the device.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line474">line 474</a>
+        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line489">line 489</a>
     </li></ul></dd>
     
 
@@ -763,8 +777,38 @@ successful response from the device.</p>
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>An error since this is a direct interaction.</p>
+    
+    </div>
 
 
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -839,7 +883,7 @@ error is thrown, it will not be caught.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line186">line 186</a>
+        <a href="trezor.js.html">trezor.js</a>, <a href="trezor.js.html#line248">line 248</a>
     </li></ul></dd>
     
 
@@ -867,6 +911,10 @@ error is thrown, it will not be caught.</p>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>handles the work of calling TrezorConnect</p>
+</div>
+
 
 
 <dl>
@@ -909,7 +957,7 @@ error is thrown, it will not be caught.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jan 05 2020 16:43:31 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 20:25:40 GMT-0700 (Mountain Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -56,7 +56,7 @@ at a given BIP32 path.</p>
 
 
 <div class="description">
-    <p>Requires a BIP32 path to the node to export.</p>
+    <p>Requires a valid BIP32 path to the node to export.</p>
 </div>
 
 
@@ -108,7 +108,7 @@ at a given BIP32 path.</p>
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>options argument</p></td>
         </tr>
 
     
@@ -172,7 +172,7 @@ at a given BIP32 path.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line396">line 396</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line434">line 434</a>
     </li></ul></dd>
     
 
@@ -248,6 +248,128 @@ console.log(node);</code></pre>
     
 
     
+    <h4 class="name" id="hasBIP32PathWarning"><span class="type-signature"></span>hasBIP32PathWarning<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Returns whether or not the Ledger device will display a warning
+to the user about an unusual BIP32 path.</p>
+<p>A &quot;usual&quot; BIP32 path is exactly 5 segments long.  The segments
+have the following constraints:</p>
+<ul>
+<li>Segment 1: Must be equal to <code>44'</code></li>
+<li>Segment 2: Can have any value</li>
+<li>Segment 3: Must be between <code>0'</code> and <code>100'</code></li>
+<li>Segment 4: Must be equal to <code>0</code></li>
+<li>Segment 5: Must be between <code>0 and 50000</code></li>
+</ul>
+<p>Any other kind of path is considered unusual and will trigger the
+warning.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line557">line 557</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>whether a BIP32 path warning will be displayed</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="messages"><span class="type-signature"></span>messages<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="module-interaction.html#.Message">module:interaction.Message</a>>}</span></h4>
     
 
@@ -305,7 +427,7 @@ console.log(node);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line406">line 406</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line444">line 444</a>
     </li></ul></dd>
     
 
@@ -333,6 +455,10 @@ console.log(node);</code></pre>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>messages for this interaction</p>
+</div>
+
 
 
 <dl>
@@ -359,7 +485,7 @@ console.log(node);</code></pre>
     
 
     
-    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -416,7 +542,7 @@ console.log(node);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line482">line 482</a>
+        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line500">line 500</a>
     </li></ul></dd>
     
 
@@ -439,8 +565,38 @@ console.log(node);</code></pre>
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>An error since this is a direct interaction.</p>
+    
+    </div>
 
 
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -452,7 +608,7 @@ console.log(node);</code></pre>
     
 
     
-    <h4 class="name" id="request"><span class="type-signature"></span>request<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="request"><span class="type-signature"></span>request<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -509,7 +665,7 @@ console.log(node);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line474">line 474</a>
+        <a href="interaction.js.html">interaction.js</a>, <a href="interaction.js.html#line489">line 489</a>
     </li></ul></dd>
     
 
@@ -532,8 +688,38 @@ console.log(node);</code></pre>
 
 
 
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>An error since this is a direct interaction.</p>
+    
+    </div>
 
 
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -602,7 +788,7 @@ console.log(node);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line480">line 480</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line580">line 580</a>
     </li></ul></dd>
     
 
@@ -660,7 +846,7 @@ console.log(node);</code></pre>
     
 
     
-    <h4 class="name" id="withApp"><span class="type-signature">(async) </span>withApp<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="withApp"><span class="type-signature">(async) </span>withApp<span class="signature">(callback)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -773,7 +959,7 @@ API as the second.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line145">line 145</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
@@ -798,6 +984,28 @@ API as the second.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>does the work of setting up an app instance (and transport connection)g181</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -818,7 +1026,7 @@ API as the second.</p>
     
 
     
-    <h4 class="name" id="withTransport"><span class="type-signature">(async) </span>withTransport<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="withTransport"><span class="type-signature">(async) </span>withTransport<span class="signature">(callback)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -883,7 +1091,7 @@ to the function.</p>
             
 
             <td class="description last"><ul>
-<li>accepts a single parameter <code>transport</code></li>
+<li>asynchronous function accepting a single parameter <code>transport</code></li>
 </ul></td>
         </tr>
 
@@ -930,7 +1138,7 @@ to the function.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line122">line 122</a>
+        <a href="ledger.js.html">ledger.js</a>, <a href="ledger.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -955,6 +1163,28 @@ to the function.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>does the work of setting up a transport connection</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -991,7 +1221,7 @@ to the function.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jan 05 2020 16:43:31 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 11 2020 20:25:40 GMT-0700 (Mountain Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
